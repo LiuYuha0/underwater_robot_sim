@@ -1,0 +1,84 @@
+function [w, wdot, vc, a] = InverseDynamics_ric_forw_dr(DH, zita, dzita, PARAM)
+%
+% Used in InverseDynamics to implement the forward recursion
+%
+% function [w, wdot, vc, a] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM)
+%
+% input:
+%       DH     dim nx4     Denavit-Hartenberg table (include joint pos)
+%       zita   dim 6+nx1   system velocities
+%       dzita  dim 6+nx1   system accelerations
+%       PARAM  struct      parameters for the dynamic simulation
+%
+% output:
+%       [w, wdot, a] see description below
+%
+% G. Antonelli, Simurv 4.0, 2013
+% http://www.eng.docente.unicas.it/gianluca_antonelli/simurv
+
+
+zita  = CheckVector(zita);
+dzita = CheckVector(dzita);
+
+z  = [0 0 1]';
+n   = size(DH,1);      % joint number
+nu1 = zita(1:3);       % vehicle linear velocity;
+nu2 = zita(4:6);       % vehicle angular velocity;
+dnu1= dzita(1:3);      % vehicle linear acceleration;
+dnu2= dzita(4:6);      % vehicle angular acceleration;
+dq  = zita(10:12);   % joint velocities
+ddq = dzita(10:12);  % joint accelerations
+r_  = PARAM.r_;
+r_c = PARAM.r_c;
+R_0_B_r = PARAM.T_0_B_r(1:3,1:3);
+r_B0_B_r = PARAM.T_0_B_r(1:3,4);
+
+r_B0_0_r = R_0_B_r'*r_B0_B_r;
+
+w    = zeros(3,n);
+wdot = zeros(3,n);
+a    = zeros(3,n);
+v    = zeros(3,n);
+vc   = zeros(3,n);
+
+% variable description:
+%   w, wdot, v, vc, a
+%   are all 3xn matrices, the i column is the vector of link i
+%   all kinematic variables are in their own frame.
+%   e.g.: w(:,2) is the angular velocity of the origin of frame 2 expressed in frame 2
+%   w    - angular velocity of the frame 
+%   wdot - angular acceleration of the frame
+%   a    - linear acceleration of origin of the frame 
+%   v    - linear velocity of the frame origin
+%   vc   - linear velocity of the center of mass 
+
+w0    = R_0_B_r'*nu2;
+wdot0 = R_0_B_r'*dnu2;
+v0    = R_0_B_r'*nu1 + cross(w0,r_B0_0_r);
+a0    = R_0_B_r'*dnu1 + cross(wdot0,r_B0_0_r) + cross(w0,cross(w0,r_B0_0_r));
+
+
+for i=1:n
+    R = Rot_dh(DH(i,2),DH(i,4));
+    R = R';   
+    if i==1
+        w(:,i)    = R*( w0 + dq(i)*z );
+        wdot(:,i) = R*( wdot0 + cross(w0,dq(i)*z) + ddq(i)*z);
+        temp    = R*v0;
+        temp2   = cross(w(:,i),r_(:,i));
+        v(:,i)  = temp + temp2;
+        vc(:,i) = temp + cross(w(:,i),r_c(:,i));
+        a(:,i)  = R*a0 + cross(wdot(:,i),r_(:,i)) + cross(w(:,i),temp2);
+    else
+        w(:,i)    = R*( w(:,i-1) + dq(i)*z );  % 2.64
+        wdot(:,i) = R*( wdot(:,i-1) + cross(w(:,i-1),dq(i)*z) + ddq(i)*z); % 2.65
+        temp    = R*v(:,i-1);
+        temp2   = cross(w(:,i),r_(:,i));
+        v(:,i)  = temp + temp2; % 2.66
+        vc(:,i) = temp + cross(w(:,i),r_c(:,i)); % 2.67
+        a(:,i)  = R*a(:,i-1) + cross(wdot(:,i),r_(:,i)) + cross(w(:,i),temp2); %2.68
+   end
+end
+
+
+
