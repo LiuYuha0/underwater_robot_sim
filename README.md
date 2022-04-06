@@ -35,6 +35,7 @@ If you want to generate video as demo above, run `GenerateMovie(0)` in MATLAB te
 
 ## Result
 The PID control results are as follows, the variation of robot's position/orientation show in Fig.1, and forces/torques in Fig.2.
-<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_pos.png" alt="result" width="480" height="360" border="10" /></a>
-<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_tau.png" alt="result" width="480" height="360" border="10" /></a>
+
+<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_pos.png" alt="result" width="360" height="270" border="10" /></a>
+<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_tau.png" alt="result" width="360" height="270" border="10" /></a>
 
