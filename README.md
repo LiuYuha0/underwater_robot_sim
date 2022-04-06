@@ -3,10 +3,10 @@ A simulator for kinematics, dynamics and control on UVDMS(Underwater Vehicle Dua
 
 ## Demo
 underwater operation without control
-![image](https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/Demo_dynamics.gif)
+<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/Demo_dynamics.gif" alt="euroc" width="480" height="360" border="10" /></a>
 
 PID feedback control on robot's position and pose
-![image](https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/Demo_PIDcontrol.gif)
+<img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/Demo_PIDcontrol.gif" alt="euroc" width="480" height="360" border="10" /></a>
 
 ## Run
 Clone the repository
