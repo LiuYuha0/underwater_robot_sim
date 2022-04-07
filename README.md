@@ -31,9 +31,7 @@ choose simulation demo
 core_UVDMS_demo2_grasp.m
 ```
 
-The `model.m`, `demo.m` and data(save as `.mat` format) would be backed up in `output` folder with timestamp.
-
-If you want to generate video as demo above, run `GenerateMovie(0)` in MATLAB terminal and choose `xx.mat`.
+The `model.m`, `demo.m` and data(save as `.mat` format) would be backed up in `output/` folder with timestamp after running. If you want to generate video as demo above, run `GenerateMovie(0)` in MATLAB terminal and choose `xx.mat`.
 
 ## Result
 The PID control results are as follows, the variation of robot's position/orientation show in Fig.1, and forces/torques in Fig.2.
