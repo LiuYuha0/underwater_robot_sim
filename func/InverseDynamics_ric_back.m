@@ -1,26 +1,24 @@
-function tau = InverseDynamics_ric_back_d(eta2, DH, DH_r, zita, dnu, w, wdot, vc, a, w_r, wdot_r, vc_r, a_r, PARAM)
+function tau = InverseDynamics_ric_back(eta2, DH, DH_r, zita, dnu, w, wdot, vc, a, w_r, wdot_r, vc_r, a_r, PARAM)
 %
 % Used in InverseDynamics to implement the backward recursion
-%
-% function tau = InverseDynamics_ric_back(eta2, DH, zita, dnu, w, wdot, vc, a, PARAM)
 %
 % input:
 %       eta2    dim 3x1     vehicle orientation
 %       DH/DH_r dim nx4     Denavit-Hartenberg table
-%       zita    dim 6+nx1   system velocities
+%       zita    dim 6+nx2   system velocities
 %       dnu     dim 6x1     vehicle linear and angular accelerations
 %       w, wdot, vc, a      see below
 %       PARAM   struct      parameters for the dynamic simulation
 %
 % output:
-%       tau    dim 6+nx1   generalized forces
+%       tau    dim 6+nx2   generalized forces
 %
 % Yuhao Liu   2019/12/30
 
 n   = size(DH,1);     % joint number
 nu  = zita(1:6);
-dq  = zita(6+1:6+6);
-tau = zeros(6+6,1);
+dq  = zita(6+1:6+2*n);
+tau = zeros(6+2*n,1);
 
 % variable description:
 %   w, wdot, v, vc, a
@@ -111,9 +109,8 @@ for i=3:-1:1
    	tau(6+i) = tau(6+i) + fric_dry(i)*sign(dq(i)) + fric_vis(i)*dq(i);
 end
 
-
-RBI_r = Rpy2Rot(eta2);        
-R_r = RBI_r*T_0_B_r(1:3,1:3);    
+     
+R_r = RBI*T_0_B_r(1:3,1:3);    
 RiI_r = zeros(3,3,n);
 RiI_r(:,:,1) = R_r*Rot_dh(DH_r(1,2),DH_r(1,4));
 
@@ -173,4 +170,4 @@ sigma_f = sigma_f_l + sigma_f_r;
 sigma_m = sigma_m_l + sigma_m_r;
 
 % force/moment acting on the vehicle
-tau(1:6) = InverseDynamics_vehicle_d(Rpy2Quat(eta2), nu, dnu, rho, g0) + [sigma_f; sigma_m];
+tau(1:6) = InverseDynamics_vehicle(Rpy2Quat(eta2), nu, dnu, rho, g0) + [sigma_f; sigma_m];

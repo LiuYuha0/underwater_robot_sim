@@ -1,9 +1,7 @@
 function [Cylinder, EndPlate1, EndPlate2] = DrawCylinder3(X1,X2,r,n,cyl_color,closed,lines)
 %
 % This function constructs a cylinder connecting two center points 
-% 
-% [Cylinder EndPlate1 EndPlate2] = cylinder3(X1+20,X2,r,n,'r',closed,lines)
-%    
+%   
 % input:
 %      X1/X2      dim 3x1   vectors of the two points
 %      r          dim 1x1   radius of the cylinder
@@ -28,8 +26,6 @@ function [Cylinder, EndPlate1, EndPlate2] = DrawCylinder3(X1,X2,r,n,cyl_color,cl
 %
 % Yuhao Liu   2019/12/30
 
-
-%%%%%%%%%%
 if (X1(1) > X2(1))
     tmpX = X1; X1 = X2; X2 = tmpX;
 end

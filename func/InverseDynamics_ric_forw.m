@@ -1,14 +1,15 @@
-function [w, wdot, vc, a] = InverseDynamics_ric_forw_d(DH, zita, dzita, PARAM)
+function [w, wdot, vc, a] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM, manipFlag)
 %
 % Used in InverseDynamics to implement the forward recursion
-%
-% function [w, wdot, vc, a] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM)
+% 
+% [w, wdot, vc, a] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM, manipFlag)
 %
 % input:
 %       DH     dim nx4     Denavit-Hartenberg table (include joint pos)
 %       zita   dim 6+nx1   system velocities
 %       dzita  dim 6+nx1   system accelerations
 %       PARAM  struct      parameters for the dynamic simulation
+%       manipFlag          
 %
 % output:
 %       [w, wdot, a] see description below
@@ -25,12 +26,20 @@ nu1 = zita(1:3);       % vehicle linear velocity;
 nu2 = zita(4:6);       % vehicle angular velocity;
 dnu1= dzita(1:3);      % vehicle linear acceleration;
 dnu2= dzita(4:6);      % vehicle angular acceleration;
-dq  = zita(6+1:6+n);   % joint velocities
-ddq = dzita(6+1:6+n);  % joint accelerations
 r_  = PARAM.r_;
 r_c = PARAM.r_c;
-R_0_B = PARAM.T_0_B(1:3,1:3);
-r_B0_B = PARAM.T_0_B(1:3,4);
+
+if manipFlag == 1
+    dq  = zita(6+1:6+n);       % manip_1 joint velocities
+    ddq = dzita(6+1:6+n);      % manip_1 joint accelerations
+    R_0_B = PARAM.T_0_B(1:3,1:3);
+    r_B0_B = PARAM.T_0_B(1:3,4);
+else
+    dq  = zita(6+n+1:6+2*n);   % manip_2 joint velocities
+    ddq = dzita(6+n+1:6+2*n);  % manip_2 joint accelerations
+    R_0_B = PARAM.T_0_B_r(1:3,1:3);
+    r_B0_B = PARAM.T_0_B_r(1:3,4);
+end
 
 r_B0_0 = R_0_B'*r_B0_B;
 

@@ -2,8 +2,6 @@ function DrawSnap(eta,DH,DH_r,PARAM,depth,oriOnly)
 %
 % 3D rendering of the UVMS in a given scenario
 %
-% DrawSnap(eta,DH,PARAM,depth)
-%
 % input:
 %   eta     dim 6x1    vehicle position/orientation
 %   DH/DH_r dim nx4    DH table (contain joint positions)

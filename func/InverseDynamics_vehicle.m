@@ -1,4 +1,4 @@
-function tau = InverseDynamics_vehicle_d(e, nu, dnu, rho, g0)
+function tau = InverseDynamics_vehicle(e, nu, dnu, rho, g0)
 % Calculate Forces and moments acting on the vehicles
 % Simulator Fossen ex. B.2
 %
@@ -16,6 +16,7 @@ function tau = InverseDynamics_vehicle_d(e, nu, dnu, rho, g0)
 %
 % G. Antonelli, Simurv 4.0, 2013
 % http://www.eng.docente.unicas.it/gianluca_antonelli/simurv
+% Modified by Yuhao Liu
 
 u = nu(1);  
 v = nu(2);  

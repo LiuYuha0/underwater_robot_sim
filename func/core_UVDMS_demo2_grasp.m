@@ -33,10 +33,10 @@ gamma(1,1)    = 0;
 gamma(6,1)    = 0;
 gamma_q       = zeros(n,npti);
 gamma_v       = zeros(6,npti);
-dzita = zeros(6+n,npti);
-tau   = zeros(6+n,npti);
+dzita         = zeros(6+n,npti);
+tau           = zeros(6+n,npti);
 q_draw        = zeros(6,301);
-TS= 0.1;
+TS            = 0.1;
 t_draw        = 0:TS:t_f;
 
 
@@ -183,7 +183,7 @@ for i=1:npti
     % do not modify remaing lines of the main loop ,
     % integration
     if i<npti
-        [dzita(:,i), zita(:,i+1), eta(:,i+1), q(:,i+1)] = Integration_d(KinOnly, eta(:,i), [DH(:,1:3) q(1:3,i)],[DH(:,1:3) q(4:6,i)], ...
+        [dzita(:,i), zita(:,i+1), eta(:,i+1), q(:,i+1)] = Integration(KinOnly, eta(:,i), [DH(:,1:3) q(1:3,i)],[DH(:,1:3) q(4:6,i)], ...
             zita(:,i), zita_d(:,i), tau(:,i), PARAM, Ts);
     end
     EstimateEndSim(t_start_sim, i, npti);

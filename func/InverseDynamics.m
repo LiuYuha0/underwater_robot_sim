@@ -1,21 +1,22 @@
-function tau = InverseDynamics(eta2,DH,zita,dzita,PARAM)
+function tau = InverseDynamics(eta2,DH,DH_r,zita,dzita,PARAM)
 %
 % Computes the inverse dynamics
 %
-% function tau = InverseDynamics(eta2,DH,zita,dzita,PARAM)
-%
+% tau = InverseDynamics(eta2,DH,DH_r,zita,dzita,PARAM)
+% 
 % input:
-%       eta2   dim 3x1     vehicle orientation
-%       DH     dim nx4     Denavit-Hartenberg table (include joint pos)
-%       zita   dim 6+nx1   system velocities
-%       dzita  dim 6+nx1   system accelerations
-%       PARAM  struct      parameters for the dynamic simulation
+%       eta2    dim 3x1     vehicle orientation
+%       DH/DH_r dim nx4     Denavit-Hartenberg table (include joint pos)
+%       zita    dim 6+nx2   system velocities
+%       dzita   dim 6+nx2   system accelerations
+%       PARAM   struct      parameters for the dynamic simulation
 %
 % output:
-%       tau    dim 6+nx1   generalized forces
+%       tau    dim 6+nx2   generalized forces
 %
 % G. Antonelli, Simurv 4.0, 2013
 % http://www.eng.docente.unicas.it/gianluca_antonelli/simurv
+% Modified by Yuhao Liu
 
 % variable description:
 %   w, wdot, a
@@ -31,8 +32,10 @@ zita  = CheckVector(zita);
 dzita = CheckVector(dzita);
 
 % forward ricorsion 
-[w, wdot, vc, a] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM);
+[w_l, wdot_l, vc_l, a_l] = InverseDynamics_ric_forw(DH, zita, dzita, PARAM, 1);
+[w_r, wdot_r, vc_r, a_r] = InverseDynamics_ric_forw(DH_r, zita, dzita, PARAM, 2);
+
 dnu = dzita(1:6);
 
 % backward ricorsion 
-tau = InverseDynamics_ric_back(eta2, DH, zita, dnu, w, wdot, vc, a, PARAM);
+tau = InverseDynamics_ric_back(eta2, DH, DH_r, zita, dnu, w_l, wdot_l, vc_l, a_l, w_r, wdot_r, vc_r, a_r,PARAM);
