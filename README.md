@@ -1,6 +1,8 @@
 # underwater_robot_sim
 A simulator for kinematics, dynamics and control on UVDMS(Underwater Vehicle Dual-Manipulator System).It uses DH method for establishing kinematic model and Newton-Euler method for dynamic model. It can be used for further research on robotics, control theory and so on. This project provides a demo for underwater grasping operation of UVDMS. 
 
+**Origanization:** Lab of Advanced Robotic Marine systems (ARMs), School of Naval Architecture and Ocean Engineering, Huazhong University of Science and Technology.
+
 ## Demo
 Underwater operation without control
 
@@ -39,3 +41,5 @@ The PID control results are as follows, the variation of robot's position/orient
 <img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_pos.png" alt="result" width="360" height="270" border="10" /></a>
 <img src="https://github.com/LiuYuha0/underwater_robot_sim/blob/master/flash/control_result_tau.png" alt="result" width="360" height="270" border="10" /></a>
 
+## Acknowledgements
+Thanks G. Antonelli very much.
